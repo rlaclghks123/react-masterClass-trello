@@ -4,6 +4,7 @@ import { ThemeProvider } from "styled-components";
 import { darkTheme } from "./theme";
 import { createGlobalStyle } from "styled-components";
 import App from "./App";
+import { RecoilRoot } from "recoil";
 const GlobalStyle = createGlobalStyle`
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400&display=swap');
 html, body, div, span, applet, object, iframe,
@@ -70,10 +71,12 @@ a {
 `;
 ReactDOM.render(
   <React.StrictMode>
+    <RecoilRoot>
     <ThemeProvider theme={darkTheme}>
       <GlobalStyle />
       <App />
     </ThemeProvider>
+    </RecoilRoot>
   </React.StrictMode>,
   document.getElementById("root")
 );
