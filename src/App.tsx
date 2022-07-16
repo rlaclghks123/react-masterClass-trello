@@ -1,8 +1,8 @@
-import { DragDropContext, Droppable, DropResult } from "react-beautiful-dnd";
+import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { toDoState } from "./atoms";
-import DraggableCard from "./Components/DraggableCard";
+import Board from "./Components/Board";
 
 const Wrapper = styled.div`
   display: flex;
@@ -17,48 +17,30 @@ const Wrapper = styled.div`
 const Boards = styled.div`
   display: grid;
   width: 100%;
-  grid-template-columns: repeat(1, 1fr);
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
 `;
-
-const Board = styled.div`
-  padding: 20px 10px;
-  padding-top: 30px;
-  background-color: ${props => props.theme.boardColor};
-  border-radius: 5px;
-  min-height: 200px;
-`;
-
 
 function App() {
-  
   const [toDos, setToDos] = useRecoilState(toDoState);
-  
-  const onDragEnd = ({draggableId,destination,source}:DropResult) => {
-    if(!destination) return;
-    setToDos((oldToDos) => {
-      const copyToDos = [...oldToDos];
-      copyToDos.splice(source.index,1);
-      copyToDos.splice(destination?.index,0,draggableId);
-      return copyToDos;
 
-    })
+  const onDragEnd = ({ draggableId, destination, source }: DropResult) => {
+    if (!destination) return;
+    // setToDos(oldToDos => {
+    //   const copyToDos = [...oldToDos];
+    //   copyToDos.splice(source.index, 1);
+    //   copyToDos.splice(destination?.index, 0, draggableId);
+    //   return copyToDos;
+    // });
   };
-
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <Wrapper>
         <Boards>
-          <Droppable droppableId="one">
-            {magic => (
-              <Board ref={magic.innerRef} {...magic.droppableProps}>
-                {toDos.map((toDo, index) => (
-                 <DraggableCard toDo={toDo} index={index} key={toDo}/>
-                ))}
-                {magic.placeholder}
-              </Board>
-            )}
-          </Droppable>
+          {Object.keys(toDos).map(boardId => (
+            <Board key={boardId} boardId={boardId} toDos={toDos[boardId]} />
+          ))}
         </Boards>
       </Wrapper>
     </DragDropContext>
