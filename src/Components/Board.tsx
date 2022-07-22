@@ -10,6 +10,12 @@ const Wrapper = styled.div`
   min-height: 200px;
 `;
 
+const Title = styled.div`
+  text-align: center;
+  font-weight: 700;
+  font-size: 18px;
+  margin-bottom: 10px;
+`;
 interface IBoard {
   toDos: string[];
   boardId: string;
@@ -17,16 +23,19 @@ interface IBoard {
 
 function Board({ toDos, boardId }: IBoard) {
   return (
-    <Droppable droppableId={boardId}>
-      {magic => (
-        <Wrapper ref={magic.innerRef} {...magic.droppableProps}>
-          {toDos.map((toDo, index) => (
-            <DraggableCard toDo={toDo} index={index} key={toDo} />
-          ))}
-          {magic.placeholder}
-        </Wrapper>
-      )}
-    </Droppable>
+    <Wrapper>
+      <Title>{boardId}</Title>
+      <Droppable droppableId={boardId}>
+        {magic => (
+          <div ref={magic.innerRef} {...magic.droppableProps}>
+            {toDos.map((toDo, index) => (
+              <DraggableCard toDo={toDo} index={index} key={toDo} />
+            ))}
+            {magic.placeholder}
+          </div>
+        )}
+      </Droppable>
+    </Wrapper>
   );
 }
 export default Board;
