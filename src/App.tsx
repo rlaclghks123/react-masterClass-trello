@@ -6,7 +6,7 @@ import Board from "./Components/Board";
 
 const Wrapper = styled.div`
   display: flex;
-  max-width: 480px;
+  max-width: 500px;
   width: 100%;
   margin: 0 auto;
   justify-content: center;
@@ -18,7 +18,7 @@ const Boards = styled.div`
   display: grid;
   width: 100%;
   grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
+  gap: 15px;
 `;
 
 function App() {
