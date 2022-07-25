@@ -3,6 +3,7 @@ import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { toDoState } from "./atoms";
 import Board from "./Components/Board";
+import DeleteBox from "./Components/DeleteBox";
 
 const Wrapper = styled.div`
   display: flex;
@@ -25,31 +26,45 @@ function App() {
   const [toDos, setToDos] = useRecoilState(toDoState);
 
   const onDragEnd = (info: DropResult) => {
-    const { draggableId, destination, source } = info;
+    const { destination, source } = info;
+
     if (!destination) return;
     if (source.droppableId === destination?.droppableId) {
       setToDos(allToDos => {
         const copyBoard = [...allToDos[source.droppableId]];
+        const copyObj = copyBoard[source.index];
         copyBoard.splice(source.index, 1);
-        copyBoard.splice(destination?.index, 0, draggableId);
+        copyBoard.splice(destination?.index, 0, copyObj);
         return { ...allToDos, [source.droppableId]: copyBoard };
       });
     }
 
     if (source.droppableId !== destination?.droppableId) {
-      setToDos(allToDos => {
-        const sourceBoard = [...allToDos[source.droppableId]];
-        const destinationBoard = [...allToDos[destination.droppableId]];
+      if (destination.droppableId === "delete") {
+        setToDos(allToDos => {
+          const sourceBoard = [...allToDos[source.droppableId]];
+          sourceBoard.splice(source.index, 1);
+          return {
+            ...allToDos,
+            [source.droppableId]: sourceBoard,
+          };
+        });
+      } else {
+        setToDos(allToDos => {
+          const sourceBoard = [...allToDos[source.droppableId]];
+          const copyObj = sourceBoard[source.index];
+          const destinationBoard = [...allToDos[destination.droppableId]];
 
-        sourceBoard.splice(source.index, 1);
-        destinationBoard.splice(destination?.index, 0, draggableId);
+          sourceBoard.splice(source.index, 1);
+          destinationBoard.splice(destination?.index, 0, copyObj);
 
-        return {
-          ...allToDos,
-          [source.droppableId]: sourceBoard,
-          [destination?.droppableId]: destinationBoard,
-        };
-      });
+          return {
+            ...allToDos,
+            [source.droppableId]: sourceBoard,
+            [destination?.droppableId]: destinationBoard,
+          };
+        });
+      }
     }
   };
 
@@ -58,7 +73,10 @@ function App() {
       <Wrapper>
         <Boards>
           {Object.keys(toDos).map(boardId => (
-            <Board key={boardId} boardId={boardId} toDos={toDos[boardId]} />
+            <>
+              <Board key={boardId} boardId={boardId} toDos={toDos[boardId]} />
+              <DeleteBox boardId="delete" />
+            </>
           ))}
         </Boards>
       </Wrapper>

@@ -2,7 +2,7 @@ import React from "react";
 import { Draggable } from "react-beautiful-dnd";
 import styled from "styled-components";
 
-const Card = styled.div<{ isDragging: boolean }>`
+const Card = styled.div<IArea>`
   border-radius: 5px;
   margin-bottom: 4px;
   padding: 10px;
@@ -13,13 +13,18 @@ const Card = styled.div<{ isDragging: boolean }>`
 `;
 
 interface IDraggableCard {
-  toDo: string;
+  toDoId: number;
+  toDoText: string;
   index: number;
 }
 
-function DraggableCard({ toDo, index }: IDraggableCard) {
+interface IArea {
+  isDragging: boolean;
+}
+
+function DraggableCard({ toDoId, toDoText, index }: IDraggableCard) {
   return (
-    <Draggable draggableId={toDo} key={toDo} index={index}>
+    <Draggable draggableId={toDoId + ""} key={toDoId} index={index}>
       {(magic, snapshot) => (
         <Card
           isDragging={snapshot.isDragging}
@@ -27,7 +32,7 @@ function DraggableCard({ toDo, index }: IDraggableCard) {
           {...magic.draggableProps}
           {...magic.dragHandleProps}
         >
-          {toDo}
+          {toDoText}
         </Card>
       )}
     </Draggable>
