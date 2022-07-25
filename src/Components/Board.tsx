@@ -104,10 +104,10 @@ function Board({ toDos, boardId }: IBoard) {
             >
               {toDos.map((toDo, index) => (
                 <DraggableCard
+                  key={toDo.id}
+                  index={index}
                   toDoId={toDo.id}
                   toDoText={toDo.text}
-                  index={index}
-                  key={toDo.id}
                 />
               ))}
               {magic.placeholder}

@@ -3,6 +3,7 @@ import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { toDoState } from "./atoms";
 import Board from "./Components/Board";
+import BoardAdd from "./Components/BoardAdd";
 import DeleteBox from "./Components/DeleteBox";
 
 const Wrapper = styled.div`
@@ -71,6 +72,7 @@ function App() {
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <Wrapper>
+        <BoardAdd />
         <Boards>
           {Object.keys(toDos).map(boardId => (
             <>
