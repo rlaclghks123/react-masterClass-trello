@@ -26,13 +26,14 @@ function Trello() {
   const [toDos, setToDos] = useRecoilState(toDoState);
 
   const onDragEnd = (info: DropResult) => {
-    const { draggableId, destination, source } = info;
+    const { destination, source } = info;
     if (!destination) return;
     if (source.droppableId === destination?.droppableId) {
       setToDos(allToDos => {
         const copyBoard = [...allToDos[source.droppableId]];
+        const taskObj = copyBoard[source.index];
         copyBoard.splice(source.index, 1);
-        copyBoard.splice(destination?.index, 0, draggableId);
+        copyBoard.splice(destination?.index, 0, taskObj);
         return { ...allToDos, [source.droppableId]: copyBoard };
       });
     } else if (destination.droppableId === "trashcan") {
@@ -44,10 +45,11 @@ function Trello() {
     } else if (source.droppableId !== destination?.droppableId) {
       setToDos(allToDos => {
         const sourceBoard = [...allToDos[source.droppableId]];
+        const taskObj = sourceBoard[source.index];
         const destinationBoard = [...allToDos[destination.droppableId]];
 
         sourceBoard.splice(source.index, 1);
-        destinationBoard.splice(destination?.index, 0, draggableId);
+        destinationBoard.splice(destination?.index, 0, taskObj);
 
         return {
           ...allToDos,
