@@ -3,6 +3,7 @@ import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { toDoState } from "./atoms";
 import Board from "./Components/Board";
+import TrashCan from "./Components/TrashCan";
 
 const Wrapper = styled.div`
   display: flex;
@@ -34,9 +35,13 @@ function App() {
         copyBoard.splice(destination?.index, 0, draggableId);
         return { ...allToDos, [source.droppableId]: copyBoard };
       });
-    }
-
-    if (source.droppableId !== destination?.droppableId) {
+    } else if (destination.droppableId === "trashcan") {
+      setToDos(allBoards => {
+        const boardCopy = [...allBoards[source.droppableId]];
+        boardCopy.splice(source.index, 1);
+        return { ...allBoards, [source.droppableId]: boardCopy };
+      });
+    } else if (source.droppableId !== destination?.droppableId) {
       setToDos(allToDos => {
         const sourceBoard = [...allToDos[source.droppableId]];
         const destinationBoard = [...allToDos[destination.droppableId]];
@@ -61,6 +66,7 @@ function App() {
             <Board key={boardId} boardId={boardId} toDos={toDos[boardId]} />
           ))}
         </Boards>
+        <TrashCan />
       </Wrapper>
     </DragDropContext>
   );
