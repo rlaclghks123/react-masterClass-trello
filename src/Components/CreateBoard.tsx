@@ -4,6 +4,8 @@ import styled from "styled-components";
 import { toDoState } from "../atoms";
 
 const Form = styled.form`
+  position: absolute;
+  top: 200px;
   input {
     height: 30px;
     width: 200px;
