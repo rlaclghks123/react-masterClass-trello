@@ -4,6 +4,8 @@ import DraggableCard from "./DraggableCard";
 import { ITodo, toDoState } from "../atoms";
 import { useSetRecoilState } from "recoil";
 import { useForm } from "react-hook-form";
+import { faXRay } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Wrapper = styled.div`
   padding-top: 10px;
@@ -53,6 +55,16 @@ const Form = styled.form`
   }
 `;
 
+const DelBtn = styled.button`
+  align-self: end;
+  margin-right: 5px;
+  margin-top: 3px;
+  font-size: 20px;
+  background-color: transparent;
+  border-style: none;
+  color: black;
+`;
+
 interface IBoard {
   toDos: ITodo[];
   boardId: string;
@@ -82,8 +94,18 @@ function Board({ toDos, boardId }: IBoard) {
     });
     setValue("toDo", "");
   };
+
+  const onDeleteHandler = (boardId: string) => {
+    setToDos(allBoards => {
+      const boardList = { ...allBoards };
+      delete boardList[boardId];
+      return boardList;
+    });
+  };
+
   return (
     <Wrapper>
+      <DelBtn onClick={() => onDeleteHandler(boardId)}>X</DelBtn>
       <Title>{boardId}</Title>
       <Form onSubmit={handleSubmit(onValid)}>
         <input
