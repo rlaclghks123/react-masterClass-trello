@@ -3,7 +3,23 @@ import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { toDoState } from "../atoms";
 import Board from "./Board";
+import CreateBoard from "./CreateBoard";
 import TrashCan from "./TrashCan";
+
+const Header = styled.div`
+  height: 100px;
+  margin-top: 40px;
+  font-weight: 800;
+  font-size: 30px;
+  display: flex;
+  justify-content: center;
+`;
+
+const Logo = styled.div`
+  width: 100px;
+  position: absolute;
+  left: 20px;
+`;
 
 const Wrapper = styled.div`
   display: flex;
@@ -12,13 +28,12 @@ const Wrapper = styled.div`
   margin: 0 auto;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: 80vh;
 `;
 
 const Boards = styled.div`
   display: grid;
-  width: 100%;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(6, 1fr);
   gap: 15px;
 `;
 
@@ -61,6 +76,10 @@ function Trello() {
   };
   return (
     <DragDropContext onDragEnd={onDragEnd}>
+      <Header>
+        <Logo>Chirello</Logo>
+        <CreateBoard />
+      </Header>
       <Wrapper>
         <Boards>
           {Object.keys(toDos).map(boardId => (

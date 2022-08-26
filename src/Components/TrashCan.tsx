@@ -5,7 +5,7 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
 const TrashCanWrapper = styled.div<ITrashCanWrapperProps>`
   position: fixed;
-  right: 45%;
+  right: 48%;
   bottom: 20px;
   display: flex;
   justify-content: center;
